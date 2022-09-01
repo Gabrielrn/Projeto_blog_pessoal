@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -14,6 +15,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 //indica que o objeto abaixo vai ser uma tabela no Banco de Dados
 @Entity 
@@ -41,6 +43,11 @@ public class Postagem {
 	@UpdateTimestamp
 	@JsonFormat(pattern = "dd/MM/yyyy:HH:mm:ss")
 	private LocalDateTime data;
+	
+	//indica que a Classe Postagem será o lado N:1 e terá um Objeto da Classe Tema
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	private Tema tema;
 
 	public Long getId() {
 		return id;
@@ -73,6 +80,13 @@ public class Postagem {
 	public void setData(LocalDateTime data) {
 		this.data = data;
 	}
-	
+
+	public Tema getTema() {
+		return tema;
+	}
+
+	public void setTema(Tema tema) {
+		this.tema = tema;
+	}
 	
 }

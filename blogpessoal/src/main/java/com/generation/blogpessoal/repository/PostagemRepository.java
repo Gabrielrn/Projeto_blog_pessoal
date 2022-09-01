@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.generation.blogpessoal.model.Postagem;
+
 //Jpa Biblioteca de métodos e instruções que descreve como deve ser o comportamento dos frameworks.
 //Jpa é oq vai fazer a conexão do nosso back end com o banco de dados.
 

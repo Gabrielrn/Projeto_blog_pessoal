@@ -23,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.generation.blogpessoal.model.Postagem;
 import com.generation.blogpessoal.repository.PostagemRepository;
+import com.generation.blogpessoal.repository.TemaRepository;
 
 //classe controller é resposável pelo crud. Toda requisição criada pelo usuário deve passar pelo controller, e este então se comunica com o model.
 //endpoints é o endereço da nossa função, neste caso /postagens
@@ -38,6 +39,9 @@ public class PostagemController {
 	//indica uma injeção de dependencia, é como se ele estivesse instanciando, private PostagemRepository = new postagemRepository
 	@Autowired
 	private PostagemRepository postagemRepository;
+	
+	@Autowired
+	private TemaRepository temaRepository;
 	
 	//ele está trazendo todos os dados da tabela postagem
 	@GetMapping
@@ -64,17 +68,25 @@ public class PostagemController {
 	//INSERT INTO tb_postagens (titulo, texto, data) VALUES ("Título", "Texto", CURRENT_TIMESTAMP());
 	@PostMapping
 	public ResponseEntity<Postagem> post(@Valid @RequestBody Postagem postagem){
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(postagemRepository.save(postagem));
+		if(temaRepository.existsById(postagem.getTema().getId()))
+			return ResponseEntity.status(HttpStatus.CREATED)
+					.body(postagemRepository.save(postagem));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 	}
 	
 	//UPDATE tb_postagens SET titulo = "titulo", texto = "texto", data = CURRENT_TIMESTAMP() WHERE id = id;
 	@PutMapping
 	public ResponseEntity<Postagem> put(@Valid @RequestBody Postagem postagem){
-		return postagemRepository.findById(postagem.getId())
-			.map(resposta -> ResponseEntity.status(HttpStatus.OK)
-					.body(postagemRepository.save(postagem)))
-			.orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+		if(postagemRepository.existsById(postagem.getId())) {
+			
+			if(temaRepository.existsById(postagem.getTema().getId()))
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(postagemRepository.save(postagem));
+			
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 	}
 	
 	//DELETE FROM tb_postagens WHERE id = id;
