@@ -60,7 +60,9 @@ public class PostagemController {
 	}
 	
 	//SELECT * FROM tb_postagens where titulo like "%titulo%";
+	//o {titulo} é uma variável de caminho
 	@GetMapping("/titulo/{titulo}")
+	//o list prepara para receber várias postagens
 	public ResponseEntity<List<Postagem>> getByTitulo(@PathVariable String titulo){
 		return ResponseEntity.ok(postagemRepository.findAllByTituloContainingIgnoreCase(titulo));
 	}
@@ -93,6 +95,7 @@ public class PostagemController {
 	
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
+		//usamos o optional para uma função void, na qual n queremos retornar nada
 		Optional<Postagem> postagem = postagemRepository.findById(id);
 		
 		if(postagem.isEmpty())
