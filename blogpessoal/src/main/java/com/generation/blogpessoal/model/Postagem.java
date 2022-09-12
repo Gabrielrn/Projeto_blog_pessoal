@@ -46,8 +46,14 @@ public class Postagem {
 	
 	//indica que a Classe Postagem será o lado N:1 e terá um Objeto da Classe Tema
 	@ManyToOne
+	//RECURSIVIDADE = A api não tem um limite de requisicoes= looping infinito, 
+	//para evitar isso temos @ignoreproperties para travar a aplicacao e evitar o looping infinito
 	@JsonIgnoreProperties("postagem")
 	private Tema tema;
+	
+	@ManyToOne
+	@JsonIgnoreProperties("postagem")
+	private Usuario usuario;
 
 	public Long getId() {
 		return id;
@@ -87,6 +93,14 @@ public class Postagem {
 
 	public void setTema(Tema tema) {
 		this.tema = tema;
+	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
 	}
 	
 }

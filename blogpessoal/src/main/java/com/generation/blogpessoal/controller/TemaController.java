@@ -25,6 +25,7 @@ import com.generation.blogpessoal.repository.TemaRepository;
 
 @RestController
 @RequestMapping("/temas")
+//o Cross serve pra fazer contato com o front
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TemaController {
 	
